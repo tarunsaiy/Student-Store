@@ -14,7 +14,8 @@ const MyListings = () => {
   const [loading, setLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState(null);
   const navigate = useNavigate();
-const [pswd,setpswd]=useState("");
+  const [pswd, setpswd] = useState("");
+
   useEffect(() => {
     const authToken = usertoken || localStorage.getItem("usertoken");
     if (!authToken) {
@@ -39,77 +40,77 @@ const [pswd,setpswd]=useState("");
         }
       });
   }, [usertoken, navigate]);
-const handleDelete = async (productId) => {
-  const result = await MySwal.fire({
-    title: "Confirm Deletion",
-    text: "Enter your password to confirm deletion",
-    input: "password",
-    inputPlaceholder: "Enter your password",
-    showCancelButton: true,
-    confirmButtonText: "Delete",
-    cancelButtonText: "Cancel",
-    inputValidator: (value) => {
-      if (!value) return "Password is required!";
-    },
-  });
 
-  if (!result.isConfirmed || !result.value) return;
+  const handleDelete = async (productId) => {
+    const result = await MySwal.fire({
+      title: "Confirm Deletion",
+      text: "Enter your password to confirm deletion",
+      input: "password",
+      inputPlaceholder: "Enter your password",
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
+      inputValidator: (value) => {
+        if (!value) return "Password is required!";
+      },
+    });
 
-  const password = result.value;
-  setpswd(password); // Optional: you can use it elsewhere
-  setDeleteLoading(productId);
+    if (!result.isConfirmed || !result.value) return;
 
-  try {
-    const authToken = usertoken || localStorage.getItem("usertoken");
+    const password = result.value;
+    setpswd(password);
+    setDeleteLoading(productId);
 
-    // ✅ Correctly pass password in the data field (in a config object)
-    const res = await axios.delete(
-      `https://studentbazaar-backend.onrender.com/mylistings/deleteproduct/${productId}`,
-      {
-        data: { password }, // ✅ send password in body
-        headers: { Authorization: authToken },
+    try {
+      const authToken = usertoken || localStorage.getItem("usertoken");
+
+      const res = await axios.delete(
+        `https://studentbazaar-backend.onrender.com/mylistings/deleteproduct/${productId}`,
+        {
+          data: { password },
+          headers: { Authorization: authToken },
+        }
+      );
+      Swal.fire("Deleted!", res.data.message, "success");
+      setListings((prev) => prev.filter((p) => p._id !== productId));
+    } catch (err) {
+      if (err.response?.status === 401) {
+        Swal.fire("Failed", "Invalid password. Deletion failed.", "error");
+      } else {
+        Swal.fire("Error", "Error deleting product.", "error");
       }
-    );
-    Swal.fire("Deleted!", res.data.message, "success");
-    setListings((prev) => prev.filter((p) => p._id !== productId));
-  } catch (err) {
-    if (err.response?.status === 401) {
-      Swal.fire("Failed", "Invalid password. Deletion failed.", "error");
-    } else {
-      Swal.fire("Error", "Error deleting product.", "error");
+    } finally {
+      setDeleteLoading(null);
     }
-  } finally {
-    setDeleteLoading(null);
-  }
-};
+  };
 
   const handleUpdate = (productId) => {
-    console.log(productId);
     navigate(`/updateproduct/${productId}`);
   };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-violet-50 to-indigo-100 flex items-center justify-center p-4">
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
-                <PacmanLoader color="#7c3aed" size={30} speedMultiplier={1.5} loading={true} />
-              </motion.div>
-            </div>
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
+          <PacmanLoader color="#facc15" size={30} speedMultiplier={1.5} loading={true} />
+        </motion.div>
+      </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
+    <div className="min-h-screen bg-gray-900 text-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <motion.div 
           initial={{ opacity: 0, y: -20 }} 
           animate={{ opacity: 1, y: 0 }} 
           className="text-center mb-12"
         >
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl sm:text-5xl font-bold text-yellow-400 mb-4">
             My Listings
           </h1>
           
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed mb-8">
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed mb-8">
             Manage your products with ease. Update details, track performance, or remove listings as needed.
           </p>
           
@@ -118,12 +119,10 @@ const handleDelete = async (productId) => {
               initial={{ scale: 0.9 }} 
               animate={{ scale: 1 }}
               whileHover={{ scale: 1.05 }}
-              className="flex items-center space-x-3 bg-white rounded-full px-6 py-3 shadow-md border border-gray-200"
+              className="flex items-center space-x-3 bg-gray-800 rounded-full px-6 py-3 shadow-md border border-yellow-500"
             >
-              <div className="relative">
-                <div className="w-3 h-3 bg-fuchsia-500 rounded-full"></div>
-              </div>
-              <span className="text-gray-700 font-semibold text-lg">
+              <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+              <span className="text-yellow-300 font-semibold text-lg">
                 {listings.length} {listings.length === 1 ? "Product" : "Products"} Listed
               </span>
             </motion.div>
@@ -136,17 +135,17 @@ const handleDelete = async (productId) => {
             animate={{ opacity: 1, scale: 1 }} 
             className="text-center py-16"
           >
-            <div className="max-w-lg mx-auto bg-white rounded-2xl p-12 shadow-lg border border-gray-200">
+            <div className="max-w-lg mx-auto bg-gray-800 rounded-2xl p-12 shadow-lg border border-yellow-500">
               <div className="text-6xl mb-6">📦</div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">No Products Listed Yet</h3>
-              <p className="text-gray-600 mb-8 leading-relaxed text-lg">
+              <h3 className="text-3xl font-bold text-yellow-400 mb-4">No Products Listed Yet</h3>
+              <p className="text-gray-400 mb-8 leading-relaxed text-lg">
                 Start your selling journey by adding your first product. It's quick and easy!
               </p>
               <motion.button
                 onClick={() => navigate("/sellproduct")}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center px-8 py-4  bg-fuchsia-500 text-white font-semibold rounded-xl hover: bg-fuchsia-600 transition-colors duration-200 shadow-lg"
+                className="inline-flex items-center px-8 py-4 bg-yellow-500 text-black font-semibold rounded-xl hover:bg-yellow-600 transition-colors duration-200 shadow-lg"
               >
                 <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -189,11 +188,11 @@ const ListingCard = ({ product, onDelete, onUpdate, deleteLoading }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case "Approved":
-        return "bg-green-100 text-green-800 border-green-200";
+        return "bg-green-700 text-green-200 border-green-600";
       case "Rejected":
-        return "bg-red-100 text-red-800 border-red-200";
+        return "bg-red-700 text-red-200 border-red-600";
       default:
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+        return "bg-yellow-700 text-yellow-200 border-yellow-500";
     }
   };
 
@@ -203,14 +202,14 @@ const ListingCard = ({ product, onDelete, onUpdate, deleteLoading }) => {
       variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
       exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
       whileHover={{ y: -4, scale: 1.02 }}
-      className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300"
+      className="bg-gray-800 rounded-2xl shadow-lg border border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300"
     >
-      <div className="bg-gray-50 p-6 border-b border-gray-200">
+      <div className="bg-gray-900 p-6 border-b border-gray-700">
         <div className="flex items-start justify-between">
-          <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+          <h3 className="text-xl font-bold text-yellow-400 mb-2 line-clamp-2">
             {name}
           </h3>
-          <div className=" bg-fuchsia-500 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm ml-3 shrink-0">
+          <div className="bg-yellow-500 text-black px-4 py-2 rounded-lg text-sm font-semibold shadow-sm ml-3 shrink-0">
             ₹{price}
           </div>
         </div>
@@ -234,8 +233,8 @@ const ListingCard = ({ product, onDelete, onUpdate, deleteLoading }) => {
         )}
 
         {description && (
-          <div className="mb-6 bg-gray-50 border border-gray-200 rounded-xl p-4">
-            <p className="text-sm text-gray-700 leading-relaxed line-clamp-4">{description}</p>
+          <div className="mb-6 bg-gray-900 border border-gray-700 rounded-xl p-4">
+            <p className="text-sm text-gray-300 leading-relaxed line-clamp-4">{description}</p>
           </div>
         )}
 
@@ -245,7 +244,7 @@ const ListingCard = ({ product, onDelete, onUpdate, deleteLoading }) => {
             target="_blank" 
             rel="noopener noreferrer" 
             whileHover={{ scale: 1.05 }}
-            className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 font-medium mb-6 transition-colors"
+            className="inline-flex items-center text-sm text-yellow-400 hover:text-yellow-300 font-medium mb-6 transition-colors"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -255,12 +254,12 @@ const ListingCard = ({ product, onDelete, onUpdate, deleteLoading }) => {
           </motion.a>
         )}
 
-        <div className="flex gap-3 pt-4 border-t border-gray-200">
+        <div className="flex gap-3 pt-4 border-t border-gray-700">
           <motion.button
             onClick={() => onUpdate(_id)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex-1 bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 hover:bg-blue-700 shadow-sm"
+            className="flex-1 bg-yellow-500 text-black font-semibold py-3 px-4 rounded-lg transition-colors duration-200 hover:bg-yellow-600 shadow-md"
           >
             Update
           </motion.button>
@@ -269,7 +268,7 @@ const ListingCard = ({ product, onDelete, onUpdate, deleteLoading }) => {
             disabled={deleteLoading}
             whileHover={{ scale: deleteLoading ? 1 : 1.05 }}
             whileTap={{ scale: deleteLoading ? 1 : 0.95 }}
-            className="flex-1 bg-red-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-50 hover:bg-red-700 shadow-sm"
+            className="flex-1 bg-red-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-50 hover:bg-red-700 shadow-md"
           >
             {deleteLoading ? (
               <span className="flex items-center justify-center">
@@ -295,8 +294,8 @@ const InfoRow = ({ icon, label, value }) => {
     <div className="flex items-start gap-3 text-sm">
       <span className="text-lg">{icon}</span>
       <div className="min-w-0 flex-1">
-        <span className="text-gray-500 font-medium">{label}:</span>{" "}
-        <span className="text-gray-900 break-words font-semibold">{value}</span>
+        <span className="text-gray-400 font-medium">{label}:</span>{" "}
+        <span className="text-yellow-300 break-words font-semibold">{value}</span>
       </div>
     </div>
   );

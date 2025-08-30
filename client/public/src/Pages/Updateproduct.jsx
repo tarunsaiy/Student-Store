@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Store } from '../App';
 import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
@@ -12,7 +12,8 @@ const UpdateProduct = () => {
   const { usertoken } = useContext(Store);
   const token = usertoken || localStorage.getItem('usertoken');
   const navigate = useNavigate();
-  const {productId}=useParams()
+  const { productId } = useParams();
+
   const [form, setForm] = useState({
     name: '',
     price: '',
@@ -36,9 +37,7 @@ const UpdateProduct = () => {
       }
 
       if (!productId) {
-        console.log(productId)
         setError('Product ID is missing');
-        
         setLoading(false);
         return;
       }
@@ -89,6 +88,9 @@ const UpdateProduct = () => {
       showCancelButton: true,
       confirmButtonText: 'Yes, update it!',
       cancelButtonText: 'Cancel',
+      background: '#111',
+      color: '#FFD700',
+      confirmButtonColor: '#FFD700'
     });
 
     if (!result.isConfirmed) return;
@@ -106,6 +108,9 @@ const UpdateProduct = () => {
         icon: 'success',
         title: 'Updated!',
         text: 'Product updated successfully!',
+        background: '#111',
+        color: '#FFD700',
+        confirmButtonColor: '#FFD700'
       });
       navigate('/mylistings');
     } catch (err) {
@@ -113,6 +118,9 @@ const UpdateProduct = () => {
         icon: 'error',
         title: 'Error',
         text: err.response?.data?.message || 'Failed to update product',
+        background: '#111',
+        color: '#FFD700',
+        confirmButtonColor: '#FFD700'
       });
       setError(err.response?.data?.message || 'Failed to update product');
     } finally {
@@ -122,9 +130,9 @@ const UpdateProduct = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-violet-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-black flex items-center justify-center p-4">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
-          <PacmanLoader color="#7c3aed" size={30} speedMultiplier={1.5} loading={true} />
+          <PacmanLoader color="#FFD700" size={30} speedMultiplier={1.5} loading={true} />
         </motion.div>
       </div>
     );
@@ -132,12 +140,12 @@ const UpdateProduct = () => {
 
   if (error && (!form.name || !productId)) {
     return (
-      <div className="min-h-screen flex justify-center items-center">
+      <div className="min-h-screen bg-black flex justify-center items-center">
         <div className="text-center">
-          <p className="text-red-600 font-medium">{error}</p>
+          <p className="text-red-400 font-medium">{error}</p>
           <button
             onClick={() => navigate('/mylistings')}
-            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            className="mt-4 px-4 py-2 bg-yellow-500 text-black rounded-lg hover:bg-yellow-600"
           >
             Go Back
           </button>
@@ -151,13 +159,13 @@ const UpdateProduct = () => {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="max-w-4xl mx-auto p-8 bg-white rounded-2xl shadow-lg mt-12"
+      className="max-w-4xl mx-auto p-8 bg-gray-900 rounded-2xl shadow-lg mt-12"
     >
-      <h2 className="text-4xl font-bold text-indigo-700 mb-8 text-center">Update Product</h2>
+      <h2 className="text-4xl font-bold text-yellow-400 mb-8 text-center">Update Product</h2>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-600 font-medium">{error}</p>
+        <div className="mb-6 p-4 bg-red-900 border border-red-400 rounded-lg">
+          <p className="text-red-400 font-medium">{error}</p>
         </div>
       )}
 
@@ -172,7 +180,7 @@ const UpdateProduct = () => {
           { name: 'phoneno', label: 'Phone Number', type: 'tel' },
         ].map(({ name, label, type, required, min }) => (
           <div key={name} className="flex flex-col">
-            <label className="text-gray-700 font-semibold mb-2">
+            <label className="text-yellow-300 font-semibold mb-2">
               {label} {required && <span className="text-red-500">*</span>}
             </label>
             <input
@@ -183,20 +191,20 @@ const UpdateProduct = () => {
               required={required}
               min={min}
               placeholder={`Enter ${label.toLowerCase()}`}
-              className="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="px-4 py-3 rounded-lg border border-gray-700 bg-black text-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
           </div>
         ))}
 
         <div className="flex flex-col">
-          <label className="text-gray-700 font-semibold mb-2">Description</label>
+          <label className="text-yellow-300 font-semibold mb-2">Description</label>
           <textarea
             name="description"
             value={form.description}
             onChange={handleChange}
             rows={4}
             placeholder="Enter product description"
-            className="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+            className="px-4 py-3 rounded-lg border border-gray-700 bg-black text-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 resize-none"
           />
         </div>
 
@@ -205,7 +213,7 @@ const UpdateProduct = () => {
             type="button"
             onClick={() => navigate('/mylistings')}
             whileTap={{ scale: 0.97 }}
-            className="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-xl font-semibold transition duration-300"
+            className="flex-1 bg-gray-700 hover:bg-gray-600 text-yellow-300 px-6 py-3 rounded-xl font-semibold transition duration-300"
           >
             Cancel
           </motion.button>
@@ -214,7 +222,7 @@ const UpdateProduct = () => {
             type="submit"
             disabled={submitting}
             whileTap={{ scale: 0.97 }}
-            className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white px-6 py-3 rounded-xl font-semibold transition duration-300"
+            className="flex-1 bg-yellow-500 hover:bg-yellow-600 disabled:bg-yellow-300 text-black px-6 py-3 rounded-xl font-semibold transition duration-300"
           >
             {submitting ? 'Updating...' : 'Update Product'}
           </motion.button>

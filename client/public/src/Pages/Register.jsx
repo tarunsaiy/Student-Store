@@ -61,7 +61,7 @@ const Register = () => {
         confirmButtonText: 'OK'
       });
 
-      navigate('/login'); // ✅ Redirect after success
+      navigate('/login'); 
     } catch (error) {
       await MySwal.fire({
         title: 'Registration Failed',
@@ -77,25 +77,25 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 px-4">
-      <div className="w-full max-w-md bg-white shadow-2xl rounded-2xl p-8">
-        <h1 className="text-3xl font-bold text-center text-indigo-700 mb-6">Create Your Account</h1>
+    <div className="min-h-screen flex items-center justify-center bg-black px-4">
+      <div className="w-full max-w-md bg-gray-900 shadow-2xl rounded-2xl p-8 border border-yellow-500">
+        <h1 className="text-3xl font-bold text-center text-yellow-400 mb-6">Create Your Account</h1>
 
         {error && (
-          <p className="text-red-600 bg-red-100 text-sm text-center px-3 py-2 rounded mb-4">
+          <p className="text-red-400 bg-red-900/40 text-sm text-center px-3 py-2 rounded mb-4">
             {error}
           </p>
         )}
 
         {success && (
-          <p className="text-green-600 bg-green-100 text-sm text-center px-3 py-2 rounded mb-4">
+          <p className="text-green-400 bg-green-900/40 text-sm text-center px-3 py-2 rounded mb-4">
             {success}
           </p>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
+            <label htmlFor="name" className="block text-sm font-medium text-yellow-300">Full Name</label>
             <input
               type="text"
               name="name"
@@ -103,12 +103,12 @@ const Register = () => {
               required
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none"
+              className="w-full px-4 py-2 mt-1 border border-yellow-500 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400 outline-none"
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-yellow-300">Email</label>
             <input
               type="email"
               name="email"
@@ -116,12 +116,12 @@ const Register = () => {
               required
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none"
+              className="w-full px-4 py-2 mt-1 border border-yellow-500 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400 outline-none"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-yellow-300">Password</label>
             <input
               type="password"
               name="password"
@@ -129,12 +129,12 @@ const Register = () => {
               required
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none"
+              className="w-full px-4 py-2 mt-1 border border-yellow-500 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400 outline-none"
             />
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-yellow-300">Confirm Password</label>
             <input
               type="password"
               name="confirmPassword"
@@ -142,21 +142,21 @@ const Register = () => {
               required
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none"
+              className="w-full px-4 py-2 mt-1 border border-yellow-500 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400 outline-none"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-all duration-300"
+            className="w-full bg-yellow-500 text-black py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-all duration-300"
           >
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
 
-        <div className="text-center mt-6 text-sm text-gray-600">
+        <div className="text-center mt-6 text-sm text-gray-400">
           Already have an account?
-          <Link to="/login" className="text-indigo-600 font-semibold ml-1 hover:underline">
+          <Link to="/login" className="text-yellow-400 font-semibold ml-1 hover:underline">
             Login
           </Link>
         </div>

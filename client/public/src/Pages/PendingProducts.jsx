@@ -121,43 +121,48 @@ const PendingProducts = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-yellow-50 via-purple-50 to-pink-50 py-10 px-4">
+    <div className="min-h-screen bg-gray-900 text-gray-200 py-10 px-4">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-indigo-700 mb-10">
+        <h1 className="text-4xl font-bold text-center text-yellow-400 mb-10">
           Pending Products for Approval
         </h1>
 
         {loading ? (
           <div className="flex justify-center mt-20">
-            <PacmanLoader color="#6366f1" size={25} />
+            <PacmanLoader color="#facc15" size={25} />
           </div>
         ) : products.length === 0 ? (
-          <p className="text-center text-gray-500 text-lg font-medium">🎉 No pending products.</p>
+          <p className="text-center text-gray-400 text-lg font-medium">🎉 No pending products.</p>
         ) : (
           <div className="space-y-6">
             {products.map(product => (
               <div
                 key={product._id}
-                className="p-6 bg-white shadow-md rounded-xl border border-violet-100 hover:shadow-lg transition duration-300"
+                className="p-6 bg-gray-800 shadow-md rounded-xl border border-yellow-500 hover:shadow-lg transition duration-300"
               >
-                <h2 className="text-2xl font-semibold text-indigo-800 mb-2">{product.name}</h2>
-                <div className="text-gray-700 text-sm space-y-1">
-                  <p><strong>Price:</strong> ₹{product.price}</p>
-                  <p><strong>Roll No:</strong> {product.rollno || "N/A"}</p>
-                  <p><strong>College Name:</strong> {product.collegename || "N/A"}</p>
-                  <p><strong>Department:</strong> {product.dept || "N/A"}</p>
-                  <p><strong>Phone No:</strong> {product.phoneno || "N/A"}</p>
-                  <p><strong>Description:</strong> {product.description || "N/A"}</p>
-                  <p><strong>Seller Email:</strong> {product.email}</p>
+                <h2 className="text-2xl font-semibold text-yellow-300 mb-2">{product.name}</h2>
+                <div className="text-gray-300 text-sm space-y-1">
+                  <p><strong className="text-yellow-400">Price:</strong> ₹{product.price}</p>
+                  <p><strong className="text-yellow-400">Roll No:</strong> {product.rollno || "N/A"}</p>
+                  <p><strong className="text-yellow-400">College Name:</strong> {product.collegename || "N/A"}</p>
+                  <p><strong className="text-yellow-400">Department:</strong> {product.dept || "N/A"}</p>
+                  <p><strong className="text-yellow-400">Phone No:</strong> {product.phoneno || "N/A"}</p>
+                  <p><strong className="text-yellow-400">Description:</strong> {product.description || "N/A"}</p>
+                  <p><strong className="text-yellow-400">Seller Email:</strong> {product.email}</p>
                   {product.googledrivelink && (
-                    <p><strong>Drive Link:</strong> <a href={product.googledrivelink} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">View Files</a></p>
+                    <p>
+                      <strong className="text-yellow-400">Drive Link:</strong>{" "}
+                      <a href={product.googledrivelink} className="text-yellow-300 hover:underline" target="_blank" rel="noopener noreferrer">
+                        View Files
+                      </a>
+                    </p>
                   )}
                 </div>
 
                 <div className="flex gap-4 mt-4">
                   <button
                     onClick={() => approveProduct(product._id, product.email)}
-                    className="px-5 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
+                    className="px-5 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
                     disabled={loadingProductId === product._id}
                   >
                     {loadingProductId === product._id && actionType === "approve"
@@ -167,7 +172,7 @@ const PendingProducts = () => {
 
                   <button
                     onClick={() => rejectProduct(product._id, product.email)}
-                    className="px-5 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                    className="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
                     disabled={loadingProductId === product._id}
                   >
                     {loadingProductId === product._id && actionType === "reject"
